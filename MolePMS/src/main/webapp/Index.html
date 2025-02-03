@@ -4,11 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MOLE PMS</title>
-    <link rel="stylesheet" href="css/Index.css">
+
     <script src="../Javascript/CoreFunction.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.js"
 	integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
 	crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="css/Index.css">
+    <link rel="stylesheet" href="css/pop-up.css">
+
 </head>
 <body>
     <div class="container">
@@ -31,11 +35,118 @@
                 <button type="submit" onclick="login()">Login</button>
             </form>
             <div class="links">
-                <a href="#">회원가입</a> | 
+                <a href="#" onclick="openPopup()">회원가입</a> | 
                 <a href="#">아이디 찾기</a> | 
                 <a href="#">비밀번호 찾기</a>
             </div>
         </div>
     </div>
+    <div id="popup" class="popup-overlay">
+		<div class="popup-content">
+			<span class="close-btn" onclick="closePopup()">&times;</span>
+			<h2>회원가입</h2>
+			<form>
+				<input type="text" placeholder="이름">
+				<input type="email" placeholder="이메일">
+				<input type="password" placeholder="비밀번호">
+				<input type="submit" value="회원 가입" onclick="signup()">
+			</form>
+		</div>
+	</div>
 </body>
 </html>
+
+<script>
+	function openPopup() {
+		var popup = document.getElementById("popup");
+		popup.style.visibility = "visible";
+		popup.style.opacity = "1";
+	}
+
+	function closePopup() {
+		var popup = document.getElementById("popup");
+		popup.style.visibility = "hidden";
+		popup.style.opacity = "0";
+	}
+
+    function login(event) {
+        event.preventDefault();
+		var id = $("#id").val().trim();
+		if (id == "") {
+			alert("아이디를 입력해 주세요.");
+			$("#id").focus();
+			return;
+		}
+		var ps = $("#ps").val().trim();
+		if (ps == "") {
+			alert("패스워드를 입력해 주세요.");
+			$("#ps").focus();
+			return;
+		}
+
+		var url = "jsp/Login.jsp?id=" + id + "&ps=" + ps;
+		AJAX.call(url, null, function (data) {
+			var code = data.trim();
+			if (code == "NE") {
+				alert("아이디가존재하지않습니다.");
+			}
+			else if (code == "PE") {
+				alert("패스워드가일치하지않습니다.");
+			}
+			else {
+				window.location.href = "MainPage.html";
+			}
+		});
+        return false;
+	}
+
+    function signup(event) {
+        event.preventDefault();
+    var id = $("#id").val().trim();
+    if (id == "") {
+        alert("아이디를 입력해 주세요.");
+        $("#id").focus();
+        return;
+    }
+ 
+    var ps = $("#ps").val().trim();
+    if (ps == "") {
+        alert("패스워드를 입력해 주세요.");
+        $("#ps").focus();
+        return;
+    }
+
+    var ps2 = $("#ps2").val().trim();
+    if (ps != ps2) {
+        alert("입력된 두 개의 패스워드가 일치하지 않습니다.");
+        $("#ps2").focus();
+        return;
+    }
+
+    var name = $("#name").val().trim();
+    if (name == "") {
+        alert("이름을 입력해 주세요.");
+        $("#name").focus();
+        return;
+    }
+    
+    var usrobj = {id: id, password: ps, name: name, ts: getToday()};
+    var params = {id: id, jsonstr: JSON.stringify(usrobj)};
+    
+    var url ="jsp/signup.jsp";
+    AJAX.call(url, params, function(data) {
+        var code = data.trim();
+        if(code == "EX") {
+            alert("이미 가입한 회원입니다.");
+        }
+        else if(code == "ER") {
+            alert("회원가입 처리중 에러가 발생하였습니다.");
+        }
+        else {
+            alert("회원 가입이 완료되었습니다.");
+            window.location.href = "main.html";
+        }
+    });
+return false;
+}
+</script>
