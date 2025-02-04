@@ -1,18 +1,20 @@
 name: "Create PR"
 on: 
-    push:
-        - develop
+  push:
+    branches:
+      - develop  # 올바른 트리거 설정
 
 jobs:
-  create-pr-on-push:
+  pull-request:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@1.0.0
-    
-    - name: Create pull request
-      uses: thomaseizinger/create-pull-request@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        head: ${{ github.ref }}
-        base: master
-        title: "An automatically created PR!"
+      - uses: actions/checkout@v3
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}  # 또는 ${{ secrets.MY_PAT }}
+          branch: auto-pr-branch
+          base: main
+          title: 'Automated Pull Request'
+          body: 'This pull request was automatically created by the GitHub Action.'
