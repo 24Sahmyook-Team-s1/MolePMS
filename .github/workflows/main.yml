@@ -4,6 +4,10 @@ on:
     branches:
       - develop  # 올바른 트리거 설정
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   pull-request:
     runs-on: ubuntu-latest
