@@ -1,5 +1,7 @@
 name: "Create PR"
-on: push
+on: 
+    push:
+        - develop
 
 jobs:
   create-pr-on-push:
