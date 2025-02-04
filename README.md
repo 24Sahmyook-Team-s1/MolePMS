@@ -1,4 +1,17 @@
-# 2. Commit Type
+# Mole PMS
+*' 프로젝트중 나오는 Issue를 MoldPMS와 함께 두더지게임 처럼 잡아내기! '*
+
+**프로젝트 설명 :** 문서,일정,이슈를 한번에 볼수있는 프로젝트 진행 통합관리 시스템
+<br>
+**팀원 :** 김정현(Lead),김재욱,박민수,차성호
+<br><br>
+**사용 기술 :** Java (21),  JavaScript,  HTML5,  CSS,  Oracle Database 11g,  AWS ec2,  Tomcat 9. Docker
+<br>
+**구현 방식 설명:** JSP와 AJAX를 활용한 SSR(Sever Side Rendering) Web Project 이다. 
+
+
+
+# Commit Type
 
 타입은 태그와 제목으로 구성되고, 태그는 영어로 쓰되 첫 문자는 대문자로 한다.
 
@@ -12,7 +25,7 @@
 - `test` : 테스트 코드, 리펙토링 테스트 코드 추가
 - `chore` : 빌드 업무 수정, 패키지 매니저 수정
 
-# 3. Subject
+# Subject
 
 - 제목은 최대 50글자가 넘지 않도록 하고 마침표 및 특수기호는 사용하지 않는다.
 - 영문으로 표기하는 경우 동사(원형)를 가장 앞에 두고 첫 글자는 대문자로 표기한다.(과거 시제를 사용하지 않는다.)
