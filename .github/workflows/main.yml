@@ -16,8 +16,9 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: 'Automated pull request'
-          branch: auto-pr-branch
+          branch: auto-pr-branch-$(date +%Y%m%d%H%M%S)  # 고유한 브랜치 이름
           base: main
           title: 'Automated Pull Request'
           body: |
             This pull request was automatically created by the GitHub Action.
+          create-empty-commit: true  # 빈 커밋 생성
