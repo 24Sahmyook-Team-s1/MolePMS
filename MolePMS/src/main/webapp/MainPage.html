@@ -1,53 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Main Page</title>
-    <link rel="stylesheet" href="../CSS/MainPage.css">
-    <script src="https://code.jquery.com/jquery-3.4.1.js"
-	integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-	crossorigin="anonymous"></script>
-</head>
-<body>
+    <link rel="stylesheet" href="../CSS/MainPage.css" />
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.js"
+      integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
     <div class="header">
-        <h1>MOLE</h1>
+      <h1>MOLE</h1>
     </div>
 
     <div class="main-container">
-        <div class="ongoing-projects">
-            <h2>On Going</h2>
-            <div class="project-list">
-                <div class="project">project 1</div>
-                <div class="project">project 2</div>
-                <div class="project">project 1</div>
-                <div class="project">project 2</div>
-                <div class="project">project 1</div>
-            </div>
-        </div>
-          <div>
+      <div class="ongoing-projects">
+        <h2>On Going</h2>
+        <div class="project-list"></div>
+      </div>
+      <div>
         <div class="recent-and-gantt">
           <div class="box-col">
-          <h2 class="title">recent issue</h2>
+            <h2 class="title">recent issue</h2>
             <div class="recent-issue-container">
-                <div class="recent-issues">
-                    <div class="issue">issue: something on svelte</div>
-                    <div class="issue">issue: something on svelte</div>
-                    <div class="issue">issue: something on svelte</div>
-                </div>
+              <div class="recent-issues">
+                <div class="issue">issue: something on svelte</div>
+                <div class="issue">issue: something on svelte</div>
+                <div class="issue">issue: something on svelte</div>
+              </div>
             </div>
-            </div>
+          </div>
 
           <div class="box-col">
             <h2 class="title">Gantt Chart</h2>
             <div class="gantt-chart-container">
-                <div class="chart">
-                    <div>Example Block A</div>
-                </div>
+              <div class="chart">
+                <div>Example Block A</div>
+              </div>
             </div>
-            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    </div>
-  </div>
-</body>
-</html
+  </body>
+</html>
+<script>
+  var minNo = -1;
+  var projectList = [];
+  var projectID = null;
+
+  function start(uid) {
+    projectID = '"' + uid + '"';
+    AJAX.call("jsp/GetProjectID.jsp", { id: uid }, function (data) {
+      var list = JSON.parse(data.trim());
+      for (var i = 0; i < list.length; i++) {
+        projectID += ', "' + list[i].id + '"';
+      }
+      start2(uid);
+    });
+  }
+
+  function start2(uid) {
+    var tempProjectList = DataCache.get("mainCache");
+    if (tempProjectList != null) {
+      projectList = tempProjectList;
+      show(projectList);
+    } else {
+      AJAX.call(
+        "jsp/GetProjectList.jsp",
+        { projectID: projectID }, // ✅ 변수명 수정 (대소문자 오류 수정)
+        function (data) {
+          var tempProjectList = JSON.parse(data.trim());
+          projectList = tempProjectList;
+          DataCache.set("mainCache", projectList);
+          show(projectList);
+        }
+      );
+    }
+  }
+
+  function show(projects) {
+    if (projects.length > 0) {
+      minNo = projects[projects.length - 1].no;
+    }
+
+    var str = "";
+    for (var i = 0; i < projects.length; i++) {
+      str += getProjectCode(projects[i]); // ✅ 프로젝트 UI 생성
+    }
+
+    $(".project-list").append(str); // ✅ On Going 프로젝트 목록에 추가
+  }
+
+  function getProjectCode(project) {
+    var name = project.name ? project.name : "Unnamed Project"; // 프로젝트 이름 설정
+
+    var str = "<div class='project'>";
+    str += name; // 프로젝트 이름 추가
+    str += "</div>";
+
+    return str;
+  }
+</script>
