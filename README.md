@@ -1,8 +1,6 @@
 # Mole PMS
 *' 프로젝트중 나오는 Issue를 MoldPMS와 함께 두더지게임 처럼 잡아내기! '*
 
-Link : molepms.github.io/MolePMS
-
 **프로젝트 설명 :** 문서,일정,이슈를 한번에 볼수있는 프로젝트 진행 통합관리 시스템
 <br>
 #### 팀원 
